@@ -10,6 +10,7 @@ Patch0:		swingx-properties.patch
 BuildRequires:	java-devel java-rpmbuild ant
 BuildRequires:	jmock emma junit swingworker swing-layout batik jhlabs-filters
 BuildArch:	noarch
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 %description
 Swingx contains extensions to the Swing GUI toolkit, including new and
 enhanced components that provide functionality commonly required by
