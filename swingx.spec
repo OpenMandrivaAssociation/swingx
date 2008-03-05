@@ -4,6 +4,7 @@ Release:	%mkrel 1
 Summary:	SwingLabs Swing Component Extensions
 Group:		Development/Java
 License:	LGPLv2+
+URL:		https://swingx.dev.java.net/
 Source:		%{name}-%{version}-src.zip
 Patch0:		swingx-properties.patch
 BuildRequires:	java-devel java-rpmbuild ant
