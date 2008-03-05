@@ -42,7 +42,7 @@ ant jar
 %{__rm} -Rf %{buildroot}
 %{__install} -d %{buildroot}%{_javadir}
 %{__install} -m 0644 dist/%{name}.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
-%{__ln_s} %{name}-%{version}.jar %{buildroot}%{_javadir}/%{name}.jar
+%create_jar_links
 
 %files
 %doc README COPYING
