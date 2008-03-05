@@ -7,7 +7,7 @@ License:	LGPLv2+
 URL:		https://swingx.dev.java.net/
 Source:		%{name}-%{version}-src.zip
 Patch0:		swingx-properties.patch
-BuildRequires:	java-devel java-rpmbuild ant
+BuildRequires:	java-devel java-rpmbuild ant ant-nodeps
 BuildRequires:	jmock emma junit swingworker swing-layout batik jhlabs-filters
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
