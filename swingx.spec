@@ -1,6 +1,6 @@
 Name:		swingx
 Version:	0.9.1
-Release:	%mkrel 1
+Release:	%mkrel 3
 Summary:	SwingLabs Swing Component Extensions
 Group:		Development/Java
 License:	LGPLv2+
