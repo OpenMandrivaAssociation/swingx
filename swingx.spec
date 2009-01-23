@@ -1,6 +1,6 @@
 Name:		swingx
-Version:	0.9.1
-Release:	%mkrel 4
+Version:	0.9.4
+Release:	%mkrel 1
 Summary:	SwingLabs Swing Component Extensions
 Group:		Development/Java
 License:	LGPLv2+
@@ -30,13 +30,13 @@ toolkit, although API compatibility will not be guaranteed. The SwingX
 project focuses exclusively on the raw components themselves.
 
 %prep
-%setup -q -n %{name}-src
+%setup -q -n %{name}-%{version}-src
 %patch0 -p1
 
 %{_bindir}/find . -name '*.class' -or -name '*.jar' -exec %{__rm} -f {} \;
 
 %build
-ant jar
+%ant jar
 
 %install
 %{__rm} -Rf %{buildroot}
