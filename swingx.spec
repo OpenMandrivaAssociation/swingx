@@ -1,50 +1,95 @@
-Name:		swingx
-Version:	0.9.4
-Release:	%mkrel 2
-Summary:	SwingLabs Swing Component Extensions
-Group:		Development/Java
-License:	LGPLv2+
-URL:		https://swingx.dev.java.net/
-Source:		%{name}-%{version}-src.zip
-Patch0:		swingx-properties.patch
-BuildRequires:	java-devel java-rpmbuild ant ant-nodeps
-BuildRequires:	jmock emma junit swingworker swing-layout batik jhlabs-filters
-BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+Name:           swingx
+Version:        0.9.5
+Release:        2
+Summary:        A collection of Swing components
+License:        LGPLv2
+Group:          Development/Java
+Url:            https://swingx.dev.java.net/
+Source0:        https://swingx.dev.java.net/files/documents/2981/121928/%{name}-%{version}-src.zip
+# Remove external dependency that's now included in JDK 1.6
+# See http://forums.java.net/jive/thread.jspa?messageID=318384
+Patch0:         swingx-0.9.4-LoginService.patch
+# Remove build dependencies on included binary jars and add system jars
+# Remove main class from manifest
+Patch1:         swingx-0.9.4-project-properties.patch
+# Don't do the "demo taglet" stuff
+Patch2:         swingx-0.9.5-swinglabs-build-impl.patch
+
+BuildArch:      noarch
+
+BuildRequires:      ant
+BuildRequires:      ant-nodeps
+BuildRequires:      java-devel >= 0:1.6.0
+BuildRequires:      jpackage-utils >= 0:1.5
+BuildRequires:      batik
+
+Requires:           java >= 0:1.6.0
+
+Requires(post):     jpackage-utils
+Requires(postun):   jpackage-utils
+
 %description
-Swingx contains extensions to the Swing GUI toolkit, including new and
-enhanced components that provide functionality commonly required by
-rich client applications. Highlights include:
+SwingX contains a collection of powerful, useful, and just plain fun Swing
+components. Each of the Swing components have been extended, providing
+data-aware functionality out of the box. New useful components have been
+created like the JXDatePicker, JXTaskPane, and JXImagePanel.
 
-  * Sorting, filtering, highlighting for tables, trees, and lists
-  * Find/search
-  * Auto-completion
-  * Login/authentication framework
-  * TreeTable component
-  * Collapsible panel component
-  * Date picker component
-  * Tip-of-the-Day component
 
-Many of these features will eventually be incorporated into the Swing
-toolkit, although API compatibility will not be guaranteed. The SwingX
-project focuses exclusively on the raw components themselves.
+%package javadoc
+Summary:        Javadocs for %{name}
+Group:          Development/Java
+Requires:       jpackage-utils
+
+%description javadoc
+This package contains the API documentation for %{name}.
+
 
 %prep
 %setup -q -n %{name}-%{version}-src
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+rm -rf lib/
 
-%{_bindir}/find . -name '*.class' -or -name '*.jar' -exec %{__rm} -f {} \;
 
 %build
-%ant jar
+ant jar javadoc
+
 
 %install
-%{__rm} -Rf %{buildroot}
-%{__install} -d %{buildroot}%{_javadir}
-%{__install} -m 0644 dist/%{name}.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
-%create_jar_links
+# jars
+mkdir -p $RPM_BUILD_ROOT%{_javadir}
+cp -p dist/%{name}.jar  $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
+
+# javadocs
+mkdir -p $RPM_BUILD_ROOT%{_javadocdir}/
+cp -r dist/javadoc $RPM_BUILD_ROOT%{_javadocdir}/%{name}
+
+# pom
+install -d -m 755 $RPM_BUILD_ROOT%{_mavenpomdir}
+install -pm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
+%add_to_maven_depmap org.jdesktop.swingx %{name} %{version} JPP %{name}
+
+
+%post
+%update_maven_depmap
+
+
+%postun
+%update_maven_depmap
+
 
 %files
-%doc README COPYING
-%{_javadir}/%{name}.jar
-%{_javadir}/%{name}-%{version}.jar
+%defattr(-,root,root,-)
+%doc COPYING README
+%{_javadir}/*.jar
+%{_mavenpomdir}/JPP-%{name}.pom
+%{_mavendepmapfragdir}/%{name}
+
+
+%files javadoc
+%defattr(-,root,root,-)
+%doc COPYING
+%{_javadocdir}/%{name}
+
+
