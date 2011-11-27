@@ -1,6 +1,6 @@
 Name:           swingx
 Version:        0.9.5
-Release:        2
+Release:        4
 Summary:        A collection of Swing components
 License:        LGPLv2
 Group:          Development/Java
