@@ -58,16 +58,16 @@ ant jar javadoc
 
 %install
 # jars
-mkdir -p $RPM_BUILD_ROOT%{_javadir}
-cp -p dist/%{name}.jar  $RPM_BUILD_ROOT%{_javadir}/%{name}.jar
+mkdir -p %{buildroot}%{_javadir}
+cp -p dist/%{name}.jar  %{buildroot}%{_javadir}/%{name}.jar
 
 # javadocs
-mkdir -p $RPM_BUILD_ROOT%{_javadocdir}/
-cp -r dist/javadoc $RPM_BUILD_ROOT%{_javadocdir}/%{name}
+mkdir -p %{buildroot}%{_javadocdir}/
+cp -r dist/javadoc %{buildroot}%{_javadocdir}/%{name}
 
 # pom
-install -d -m 755 $RPM_BUILD_ROOT%{_mavenpomdir}
-install -pm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
+install -d -m 755 %{buildroot}%{_mavenpomdir}
+install -pm 644 pom.xml %{buildroot}%{_mavenpomdir}/JPP-%{name}.pom
 %add_to_maven_depmap org.jdesktop.swingx %{name} %{version} JPP %{name}
 
 
@@ -80,7 +80,6 @@ install -pm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
 
 
 %files
-%defattr(-,root,root,-)
 %doc COPYING README
 %{_javadir}/*.jar
 %{_mavenpomdir}/JPP-%{name}.pom
@@ -88,39 +87,5 @@ install -pm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
 
 
 %files javadoc
-%defattr(-,root,root,-)
 %doc COPYING
 %{_javadocdir}/%{name}
-
-
-
-
-%changelog
-* Sun Nov 27 2011 Guilherme Moro <guilherme@mandriva.com> 0.9.5-4
-+ Revision: 734245
-- rebuild
-- imported package swingx
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - rebuild
-
-* Fri Jan 23 2009 Jérôme Soyer <saispo@mandriva.org> 0.9.4-1mdv2009.1
-+ Revision: 332895
-- New upstream release
-
-* Sat Aug 02 2008 Thierry Vignaud <tv@mandriva.org> 0.9.1-4mdv2009.0
-+ Revision: 261306
-- rebuild
-
-* Tue Jul 29 2008 Thierry Vignaud <tv@mandriva.org> 0.9.1-3mdv2009.0
-+ Revision: 253861
-- rebuild
-
-  + Nicolas Vigier <nvigier@mandriva.com>
-    - use create_jar_links macro
-
-* Wed Mar 05 2008 Nicolas Vigier <nvigier@mandriva.com> 0.9.1-1mdv2008.1
-+ Revision: 179987
-- import swingx
-
-
